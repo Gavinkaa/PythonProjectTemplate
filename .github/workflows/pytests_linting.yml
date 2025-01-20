@@ -1,0 +1,41 @@
+name: Pytests and Linting
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org/ | python -
+
+    - name: Install dependencies
+      run: |
+        ~/.local/bin/poetry install
+
+    - name: Install flake8
+      run: ~/.local/bin/poetry add --group dev flake8
+
+    - name: Lint with flake8
+      run: |
+        # run flake8 with extended ignore list: E203, E722, F401 and max line length 120
+        ~/.local/bin/poetry run flake8 . --count --show-source --statistics --extend-ignore=E203,E722,F401 --max-line-length=120
+
+    - name: Test with pytest
+      run: |
+        ~/.local/bin/poetry run pytest --cov=src --cov-report=term-missing
+
+    - name: Enforce mypy
+      run: |
+        ~/.local/bin/poetry run mypy --strict --config-file=pyproject.toml .

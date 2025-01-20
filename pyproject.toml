@@ -1,0 +1,19 @@
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--cov-report=term-missing",
+]
+
+pythonpath = [
+    "src/",
+    "tests/",
+]
+
+[tool.coverage.run]
+omit = [
+    "src/app.py",
+]
+
+[tool.mypy]
+mypy_path = ["src"]
+explicit_package_bases = true
