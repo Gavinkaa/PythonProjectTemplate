@@ -7,6 +7,7 @@ poetry add --dev pytest-cov
 poetry add --dev mypy
 pre-commit install
 ```
+Also update the link above with `USER` and `REPO_NAME`
 
 # PROJECT_NAME
 
